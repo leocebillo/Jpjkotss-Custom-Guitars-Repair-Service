@@ -79,6 +79,14 @@
   //     Formspree and delete this block. ---
   var form = document.getElementById('contact-form');
   var note = document.getElementById('form-note');
+
+  // Coming from a shop item ("Ask about this item"): fill in which item.
+  var askItem = new URLSearchParams(location.search).get('item');
+  if (form && askItem) {
+    form.elements.type.value = 'Buying from the shop';
+    form.elements.message.value = 'I’m interested in: ' + askItem + '\n\n';
+  }
+
   if (form && note) {
     form.addEventListener('submit', function (e) {
       e.preventDefault();

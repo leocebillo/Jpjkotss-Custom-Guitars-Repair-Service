@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Inventory | JPJKOTSS</title>
+  <meta name="claude:viewport-fit-sides" content="cover">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&amp;family=Instrument+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap">
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/shop.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body data-page="inventory" class="locked">
+  <header class="admin-bar">
+    <div class="wrap">
+      <a class="brand" href="index.html">JPJKOTSS<em>INVENTORY</em></a>
+      <nav>
+        <a href="../shop.html" target="_blank" rel="noopener">View shop</a>
+        <span class="who" id="who"></span>
+        <button class="bar-btn" type="button" id="signout">Sign out</button>
+      </nav>
+    </div>
+  </header>
+
+  <div class="demo-banner" id="demo-banner" hidden>
+    <div class="wrap">
+      <span><b>Demo mode.</b> The shop database isn’t connected yet. Changes are saved in this browser only.</span>
+      <button type="button" id="demo-reset">Reset sample data</button>
+    </div>
+  </div>
+
+  <main class="wrap admin-main">
+    <div class="admin-head">
+      <div>
+        <h1>Inventory</h1>
+        <p>Add items, update stock, and choose what shows in the shop.</p>
+      </div>
+      <button class="btn btn-primary" type="button" id="add-btn">+ Add item</button>
+    </div>
+
+    <div class="stats" id="stats">
+      <div class="stat"><span>Listed in shop</span><b id="st-listed">–</b><small id="st-listed-sub">&nbsp;</small></div>
+      <div class="stat"><span>Units in stock</span><b id="st-units">–</b><small>across all items</small></div>
+      <div class="stat"><span>Stock value</span><b id="st-value">–</b><small>at listed prices</small></div>
+      <div class="stat" id="st-attn-tile"><span>Needs attention</span><b id="st-attn">–</b><small id="st-attn-sub">&nbsp;</small></div>
+    </div>
+
+    <div class="admin-tools">
+      <input class="field search" id="a-search" type="search" placeholder="Search by name or SKU" aria-label="Search inventory">
+      <select class="field" id="a-cat" aria-label="Category"></select>
+      <select class="field" id="a-status" aria-label="Status">
+        <option value="all">All items</option>
+        <option value="in">In stock</option>
+        <option value="low">Low stock</option>
+        <option value="sold">Sold out</option>
+        <option value="hidden">Hidden from shop</option>
+      </select>
+    </div>
+
+    <div class="inv">
+      <table class="inv-table">
+        <thead><tr><th>Item</th><th>Category</th><th>Price</th><th>Stock</th><th>Status</th><th>In shop</th><th aria-label="Edit"></th></tr></thead>
+        <tbody id="inv-body"><tr><td colspan="7" class="inv-empty">Loading inventory…</td></tr></tbody>
+      </table>
+    </div>
+
+    <section class="activity" style="padding:0" aria-labelledby="act-title">
+      <h2 id="act-title">Recent stock changes</h2>
+      <ul class="log" id="log"></ul>
+    </section>
+  </main>
+
+  <dialog class="editor" id="editor" aria-labelledby="ed-title">
+    <form id="ed-form" novalidate>
+      <div class="ed-head">
+        <h2 id="ed-title">Add item</h2>
+        <button class="ed-close" type="button" id="ed-close" aria-label="Close">×</button>
+      </div>
+      <div class="ed-body">
+        <label class="s4">Name<input class="field" id="e-name" required placeholder="e.g. Used Dreadnought Acoustic"></label>
+        <label class="s2">SKU<input class="field" id="e-sku" placeholder="Auto if blank"></label>
+        <label class="s2">Category<select class="field" id="e-category"></select></label>
+        <label class="s2">Condition<select class="field" id="e-condition"></select></label>
+        <label class="s2">Brand<input class="field" id="e-brand" placeholder="Optional"></label>
+        <label class="s2">Price ($)<input class="field" id="e-price" type="number" min="0" step="0.01" inputmode="decimal" required></label>
+        <label class="s2">Quantity in stock<input class="field" id="e-qty" type="number" min="0" step="1" inputmode="numeric" required></label>
+        <label class="s2">Low-stock alert at<input class="field" id="e-low" type="number" min="0" step="1" inputmode="numeric" placeholder="0 = off"></label>
+        <label class="s6">Description<textarea class="field" id="e-desc" placeholder="What it is, its condition, and any work done on it."></textarea></label>
+        <label class="s6">Specs <span class="hint">One per line, as Label: Value</span><textarea class="field mono" id="e-specs" placeholder="Body: Alder&#10;Scale: 25.5″&#10;Pickups: Single-coil pair"></textarea></label>
+        <div class="group s6">
+          <span>Photos <span class="hint">The first photo is the main one in the shop.</span></span>
+          <div class="photo-list" id="e-photos"></div>
+          <div class="photo-add">
+            <span class="btn btn-quiet file-btn">Upload photo<input type="file" id="e-file" accept="image/*" multiple></span>
+            <input class="field" id="e-url" placeholder="or image path / link, e.g. images/products/tele.jpg">
+            <button class="btn btn-quiet" type="button" id="e-url-add">Add</button>
+          </div>
+        </div>
+        <div class="ed-checks">
+          <label class="switch"><input type="checkbox" id="e-published"><i></i>Show in shop</label>
+          <label class="switch"><input type="checkbox" id="e-featured"><i></i>Feature on home page</label>
+        </div>
+        <p class="ed-error" id="ed-error" role="alert" hidden></p>
+      </div>
+      <div class="ed-foot">
+        <button class="btn btn-danger" type="button" id="ed-delete">Delete item</button>
+        <div class="right">
+          <button class="btn btn-quiet" type="button" id="ed-cancel">Cancel</button>
+          <button class="btn btn-primary" type="submit" id="ed-save">Save</button>
+        </div>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script type="module" src="../js/admin.js"></script>
+</body>
+</html>

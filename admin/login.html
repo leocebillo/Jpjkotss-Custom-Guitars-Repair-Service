@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Staff Login | JPJKOTSS</title>
+  <meta name="claude:viewport-fit-sides" content="cover">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&amp;family=Instrument+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap">
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body data-page="login">
+  <div class="login-page">
+    <div class="wrap login-top">
+      <a class="brand" href="../index.html">JPJKOTSS<small>CUSTOM GUITARS &amp; REPAIR</small></a>
+    </div>
+    <main class="wrap login-box">
+      <div class="login-card">
+        <p class="eyebrow">Staff only</p>
+        <h1>Sign in</h1>
+        <p>Manage shop inventory, prices and listings.</p>
+        <div class="login-demo" id="demo-hint" hidden>Demo mode: the shop database isn’t connected yet, so any email and password will sign you in. Changes are saved in this browser only.</div>
+        <form id="login-form" novalidate>
+          <label>Email<input id="l-email" name="email" type="email" autocomplete="username" required></label>
+          <label>Password<input id="l-pass" name="password" type="password" autocomplete="current-password" required></label>
+          <button class="btn btn-primary" type="submit" id="l-submit">Sign in</button>
+          <p class="login-msg" id="login-msg" role="status"></p>
+        </form>
+        <div class="login-row">
+          <button type="button" id="forgot">Forgot password?</button>
+          <a href="../index.html">← Back to the website</a>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script type="module" src="../js/admin.js"></script>
+</body>
+</html>

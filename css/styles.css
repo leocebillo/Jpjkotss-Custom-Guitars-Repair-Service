@@ -10,6 +10,7 @@
   --fg:#22180f; --muted:#6b5c4d; --line:rgba(34,24,15,.14);
   --accent:#b25e14; --accent-ink:#fffaf2;
   --burst-1:#f2b456; --burst-2:#b4561c; --burst-3:#4a1d0e; --burst-4:#1a0f0a;
+  --ok:#2f7a45; --warn:#a8650a; --bad:#a83a2a;
   --rosewood:#3a2016; --fret:#cfd3d6; --pearl:#efe9df; --on-burst:#fff6ea;
   --display:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;
   --body:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -20,12 +21,12 @@
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#15100d; --surface:#1e1713; --raised:#271e19;
   --fg:#f1e7db; --muted:#a8998a; --line:rgba(241,231,219,.13);
-  --accent:#eba54a; --accent-ink:#1a0f0a; color-scheme:dark;
+  --accent:#eba54a; --accent-ink:#1a0f0a; --ok:#6cc58a; --warn:#f0b250; --bad:#f08a76; color-scheme:dark;
 }}
 :root[data-theme="dark"]{
   --bg:#15100d; --surface:#1e1713; --raised:#271e19;
   --fg:#f1e7db; --muted:#a8998a; --line:rgba(241,231,219,.13);
-  --accent:#eba54a; --accent-ink:#1a0f0a; color-scheme:dark;
+  --accent:#eba54a; --accent-ink:#1a0f0a; --ok:#6cc58a; --warn:#f0b250; --bad:#f08a76; color-scheme:dark;
 }
 
 /* ---------- 2. Base ---------- */

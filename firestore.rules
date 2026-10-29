@@ -1,0 +1,39 @@
+rules_version = '2';
+
+// Paste this into Firebase console > Firestore Database > Rules, then Publish.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Staff = signed-in users who have a document in /admins/{their uid}
+    function isAdmin() {
+      return request.auth != null
+        && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    function validProduct(d) {
+      return d.name is string && d.name.size() > 0 && d.name.size() < 200
+        && d.price is number && d.price >= 0
+        && d.qty is int && d.qty >= 0
+        && d.published is bool;
+    }
+
+    // Anyone can see listed items. Only staff can see hidden ones or make changes.
+    match /products/{id} {
+      allow read: if resource.data.published == true || isAdmin();
+      allow create, update: if isAdmin() && validProduct(request.resource.data);
+      allow delete: if isAdmin();
+    }
+
+    // Stock history: staff can read and add entries, nobody can edit or erase them.
+    match /stockLog/{id} {
+      allow read, create: if isAdmin();
+      allow update, delete: if false;
+    }
+
+    // Staff list is managed by hand in the Firebase console.
+    match /admins/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if false;
+    }
+  }
+}

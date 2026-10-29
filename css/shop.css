@@ -1,0 +1,83 @@
+/* =========================================================
+   Shop pages (shop.html, item.html, featured items on home).
+   Uses the tokens from styles.css.
+   ========================================================= */
+
+.demo-note{background:var(--surface);border-bottom:1px solid var(--line);font-size:.88rem;color:var(--muted)}
+.demo-note .wrap{padding-block:10px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.demo-note b{font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:500}
+
+/* ---------- Toolbar ---------- */
+.shop-tools{display:flex;flex-direction:column;gap:16px;margin-bottom:28px}
+.tool-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.field{font:inherit;font-size:.95rem;color:var(--fg);background:var(--raised);border:1px solid var(--line);border-radius:6px;padding:11px 14px;min-width:0}
+.field:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent)}
+.search{flex:1 1 260px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{font:500 .88rem var(--body);color:var(--fg);background:transparent;border:1px solid var(--line);border-radius:999px;padding:8px 14px;cursor:pointer}
+.chip:hover{border-color:var(--muted)}
+.chip[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.check{display:inline-flex;gap:8px;align-items:center;font-size:.92rem;color:var(--muted);cursor:pointer}
+.check input{accent-color:var(--accent);width:16px;height:16px}
+.result-count{font-family:var(--mono);font-size:.78rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+
+/* ---------- Product grid + card ---------- */
+.product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:24px 20px}
+.card{display:flex;flex-direction:column;text-decoration:none;color:inherit;min-width:0}
+.card-photo{position:relative;aspect-ratio:4/5;border-radius:6px;overflow:hidden;background:var(--surface);border:1px dashed color-mix(in srgb,var(--muted) 45%,transparent);display:flex;align-items:flex-end;padding:14px;max-width:100%}
+.card-photo.has-img{border-style:solid;border-color:transparent}
+.card-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .35s ease}
+.card:hover .card-photo img{transform:scale(1.03)}
+.card-photo .ph{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.card-photo .badge{position:absolute;top:12px;left:12px}
+.card.is-sold .card-photo{opacity:.55}
+.card-body{padding-top:14px;display:flex;flex-direction:column;gap:6px}
+.card-meta{display:flex;justify-content:space-between;gap:8px;font-size:.82rem;color:var(--muted)}
+.card h3{font-family:var(--body);font-size:1.02rem;font-weight:600;text-transform:none;line-height:1.3;letter-spacing:0}
+.card:hover h3{text-decoration:underline;text-underline-offset:3px}
+.card-foot{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.price{font-family:var(--mono);font-weight:500;font-size:1.02rem;font-variant-numeric:tabular-nums}
+
+/* ---------- Pills ---------- */
+.pill{display:inline-flex;align-items:center;gap:6px;font:500 .72rem/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:5px 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted);background:var(--raised);white-space:nowrap}
+.pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.pill.cond::before{display:none}
+.pill.s-in{color:var(--ok);border-color:color-mix(in srgb,var(--ok) 35%,transparent)}
+.pill.s-low{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 40%,transparent)}
+.pill.s-sold{color:var(--bad);border-color:color-mix(in srgb,var(--bad) 35%,transparent)}
+.pill.s-hidden{color:var(--muted)}
+.pill.feat{background:var(--burst-1);color:#1a0f0a;border-color:transparent}
+.pill.feat::before{display:none}
+
+.empty{padding:56px 0;text-align:left;color:var(--muted);border-top:1px solid var(--line)}
+.empty b{display:block;color:var(--fg);font-size:1.1rem;margin-bottom:6px}
+
+/* ---------- Item page ---------- */
+.crumbs{font-size:.88rem;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+.crumbs a{color:var(--muted)}
+.item-grid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(28px,5vw,64px);align-items:start}
+@media (max-width:860px){.item-grid{grid-template-columns:1fr}}
+.gallery-main{position:relative;aspect-ratio:4/5;border-radius:8px;overflow:hidden;background:var(--surface);border:1px dashed color-mix(in srgb,var(--muted) 45%,transparent);display:flex;align-items:flex-end;padding:18px;max-width:100%}
+.gallery-main.has-img{border-style:solid;border-color:transparent}
+.gallery-main img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.gallery-main .ph{font-family:var(--mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.thumbs{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.thumbs button{width:72px;height:72px;padding:0;border-radius:5px;overflow:hidden;border:2px solid transparent;cursor:pointer;background:var(--surface)}
+.thumbs button[aria-current="true"]{border-color:var(--accent)}
+.thumbs img{width:100%;height:100%;object-fit:cover}
+.item-info{display:flex;flex-direction:column;gap:18px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 88px)}
+@media (max-width:860px){.item-info{position:static}}
+.item-info h1{font-size:clamp(2.2rem,5vw,3.4rem);font-weight:800;text-transform:uppercase}
+.item-price{font-family:var(--mono);font-size:1.8rem;font-weight:500;font-variant-numeric:tabular-nums}
+.item-tags{display:flex;gap:8px;flex-wrap:wrap}
+.item-desc{color:var(--muted);max-width:60ch}
+.item-cta{display:flex;flex-direction:column;gap:10px}
+.item-cta .btn-dark{background:var(--fg);color:var(--bg)}
+.item-cta .btn-outline{border-color:var(--line);color:var(--fg)}
+.item-cta .btn-outline:hover{border-color:var(--muted)}
+.fine{font-size:.85rem;color:var(--muted)}
+.specs{margin:0;border-top:2px solid var(--fg)}
+.specs div{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr);gap:16px;padding:12px 0;border-bottom:1px solid var(--line)}
+.specs dt{color:var(--muted);font-size:.92rem}
+.specs dd{margin:0;font-size:.95rem}
+.sku{font-family:var(--mono);font-size:.78rem;color:var(--muted);letter-spacing:.06em}
