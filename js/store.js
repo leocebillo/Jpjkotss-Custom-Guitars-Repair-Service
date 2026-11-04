@@ -1,8 +1,6 @@
-/* =========================================================
-   Data layer for the shop and inventory.
-   Pages only talk to these functions, so they work the same in
-   demo mode (browser storage) and live mode (Firebase).
-   ========================================================= */
+// data layer for the shop and inventory.
+// pages only talk to these functions, so they work the same in
+// demo mode (browser storage) and live mode (Firebase).
 import { firebaseConfig } from './firebase-config.js';
 
 const SDK = 'https://www.gstatic.com/firebasejs/10.12.2/';
@@ -11,7 +9,7 @@ export const isDemo = !firebaseConfig.apiKey || firebaseConfig.apiKey.startsWith
 export const CATEGORIES = ['Electric guitars', 'Acoustic guitars', 'Basses', 'Orchestra strings', 'Amps & effects', 'Accessories', 'Parts'];
 export const CONDITIONS = ['New', 'Used', 'Custom build'];
 
-/* ---------- helpers ---------- */
+// helpers
 export const money = n => '$' + Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 });
 export const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
@@ -66,9 +64,7 @@ function checkSize(data) {
   }
 }
 
-/* =========================================================
-   Firebase (live mode)
-   ========================================================= */
+// firebase (live mode)
 let fbPromise = null;
 function fb() {
   if (!fbPromise) {
@@ -157,9 +153,7 @@ function logEntry(productId, p, change, reason, by, at, qtyAfter) {
   return { productId, name: p.name, sku: p.sku, change, qtyAfter: qtyAfter ?? p.qty, reason, by: by || '', at };
 }
 
-/* =========================================================
-   Demo mode (browser storage, sample items)
-   ========================================================= */
+// demo mode (browser storage, sample items)
 const KEY = 'jpjkotss-demo-v1';
 let mem = null;
 function demoData() {
@@ -219,7 +213,7 @@ const demo = {
 
 const impl = isDemo ? demo : live;
 
-/* ---------- public API ---------- */
+// public API
 export const listProducts = (opts = {}) => impl.list(!!opts.all);
 export const getProduct = id => impl.get(id);
 export const saveProduct = (p, by) => impl.save(p, by);
@@ -228,11 +222,9 @@ export const deleteProduct = (id, by) => impl.remove(id, by);
 export const listLog = (n = 25) => impl.log(n);
 export function resetDemo() { mem = null; try { localStorage.removeItem(KEY); } catch (e) {} }
 
-/* =========================================================
-   Staff sign-in
-   Live: Firebase email/password + an admins/{uid} document.
-   Demo: any email/password, remembered for this browser tab.
-   ========================================================= */
+// staff sign-in
+// live: Firebase email/password + an admins/{uid} document.
+// demo: any email/password, remembered for this browser tab.
 const DEMO_USER = 'jpjkotss-demo-user';
 
 const AUTH_ERRORS = {
@@ -298,7 +290,7 @@ export async function resetPassword(email) {
   try { await au.sendPasswordResetEmail(auth, email); } catch (e) { throw friendly(e); }
 }
 
-/* ---------- sample inventory for demo mode ---------- */
+// sample inventory for demo mode
 function seedProducts() {
   const t = Date.now(), day = 864e5;
   const items = [

@@ -1,8 +1,6 @@
-/* JPJKOTSS Custom Guitars — shared site script.
-   Every feature checks that its element exists, so this one file
-   is safe to load on every page. */
+// shared site script. every part checks its element exists first, so it's safe on any page
 (function () {
-  // --- Mobile menu ---
+  // mobile menu
   var menuBtn = document.querySelector('.menu-btn');
   var links = document.getElementById('nav-links');
   if (menuBtn && links) {
@@ -12,19 +10,19 @@
     });
   }
 
-  // --- Highlight the current page in the nav ---
+  // highlight the current page in the nav
   var here = location.pathname.split('/').pop() || 'index.html';
   document.querySelectorAll('.nav-links a').forEach(function (a) {
     if (a.getAttribute('href') === here) a.setAttribute('aria-current', 'page');
   });
 
-  // --- Footer year ---
+  // footer year
   document.querySelectorAll('[data-year]').forEach(function (el) {
     el.textContent = new Date().getFullYear();
   });
 
-  // --- Fretboard (home page). Fret distance from nut = L * (1 - 2^(-n/12)),
-  //     normalized to the last fret so the board fills the width. ---
+  // fretboard on the home page. fret n sits at L * (1 - 2^(-n/12)) from the nut,
+  // scaled so the last fret lands at the right edge
   var board = document.getElementById('board');
   var nums = document.getElementById('fretnums');
   if (board && nums) {
@@ -47,17 +45,127 @@
       if (labeled.indexOf(n) < 0) lab.className = 'odd';
       nums.appendChild(lab);
     }
+    var strings = [];
     for (var s = 0; s < 6; s++) {
       var st = document.createElement('div');
       st.className = 'string';
       st.style.top = (10 + s * 10.4) + 'px';
       st.style.opacity = 0.55 + s * 0.08;
       st.style.height = (s > 2 ? 2 : 1) + 'px';
+      st.addEventListener('animationend', function () { this.classList.remove('ring'); });
       board.appendChild(st);
+      strings.push(st);
+    }
+
+    // open E major, high e on top down to low E on the bottom
+    var notes = [329.63, 246.94, 207.65, 164.81, 123.47, 82.41];
+    var audio = null;
+
+    function wiggle(i) {
+      var el = strings[i];
+      el.classList.remove('ring');
+      void el.offsetWidth; // restart the animation
+      el.classList.add('ring');
+    }
+
+    function amp() {
+      if (audio) return audio;
+      var Ctx = window.AudioContext || window.webkitAudioContext;
+      if (!Ctx) return null;
+      var ctx = new Ctx();
+
+      // a little overdrive so it sounds like a guitar through an amp, not a harp
+      var drive = ctx.createWaveShaper();
+      var curve = new Float32Array(1024);
+      for (var k = 0; k < 1024; k++) {
+        var x = k / 512 - 1;
+        curve[k] = Math.tanh(x * 5);
+      }
+      drive.curve = curve;
+
+      var tone = ctx.createBiquadFilter();
+      tone.type = 'lowpass';
+      tone.frequency.value = 3200;
+
+      var vol = ctx.createGain();
+      vol.gain.value = 0.18;
+
+      drive.connect(tone).connect(vol).connect(ctx.destination);
+      audio = { ctx: ctx, input: drive };
+      return audio;
+    }
+
+    // Karplus-Strong: a burst of noise fed through a short delay line sounds like a plucked string
+    function pluck(freq, when) {
+      var a = amp();
+      if (!a) return;
+      var rate = a.ctx.sampleRate;
+      var period = Math.round(rate / freq);
+      var len = Math.floor(rate * 2.2);
+      var buf = a.ctx.createBuffer(1, len, rate);
+      var out = buf.getChannelData(0);
+      var line = new Float32Array(period);
+      for (var i = 0; i < period; i++) line[i] = Math.random() * 2 - 1;
+      for (var j = 0, p = 0; j < len; j++) {
+        var next = (p + 1) % period;
+        out[j] = line[p];
+        line[p] = (line[p] + line[next]) * 0.4985;
+        p = next;
+      }
+      var src = a.ctx.createBufferSource();
+      src.buffer = buf;
+      src.connect(a.input);
+      src.start(a.ctx.currentTime + when);
+    }
+
+    function strum() {
+      var a = amp();
+      if (a && a.ctx.state === 'suspended') a.ctx.resume();
+      // downstroke: low string first
+      for (var i = 5; i >= 0; i--) {
+        var delay = (5 - i) * 0.022;
+        pluck(notes[i], delay);
+        setTimeout(wiggle.bind(null, i), delay * 1000);
+      }
+    }
+
+    board.addEventListener('click', strum);
+    board.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); strum(); }
+    });
+
+    // brushing over a string makes it move (no sound until they click)
+    board.addEventListener('pointermove', function (e) {
+      var y = e.clientY - board.getBoundingClientRect().top;
+      var i = Math.round((y - 10) / 10.4);
+      if (i >= 0 && i < 6 && Math.abs(y - (10 + i * 10.4)) < 3 && !strings[i].classList.contains('ring')) wiggle(i);
+    });
+  }
+
+  // contact page: highlight today and say if the shop is open right now (shop time, not the visitor's)
+  var hoursList = document.querySelector('.hours');
+  if (hoursList) {
+    var open = { 2: [12, 19], 3: [12, 19], 4: [12, 19], 5: [12, 19], 6: [12, 17] };
+    var parts = {};
+    new Intl.DateTimeFormat('en-US', { timeZone: 'America/Chicago', weekday: 'short', hour: 'numeric', minute: 'numeric', hourCycle: 'h23' })
+      .formatToParts(new Date())
+      .forEach(function (x) { parts[x.type] = x.value; });
+    var day = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(parts.weekday);
+    var now = +parts.hour + parts.minute / 60;
+
+    var todayRow = hoursList.querySelector('[data-day="' + day + '"]');
+    if (todayRow) todayRow.classList.add('today');
+
+    var badge = document.getElementById('open-now');
+    if (badge && day >= 0) {
+      var isOpen = open[day] && now >= open[day][0] && now < open[day][1];
+      badge.textContent = isOpen ? 'Open now' : 'Closed now';
+      badge.classList.toggle('is-open', !!isOpen);
+      badge.hidden = false;
     }
   }
 
-  // --- Copy buttons (phone / email) ---
+  // copy buttons (phone / email)
   document.querySelectorAll('.copy').forEach(function (b) {
     b.addEventListener('click', function () {
       var reset = function () { setTimeout(function () { b.textContent = 'Copy'; }, 1600); };
@@ -74,13 +182,12 @@
     });
   });
 
-  // --- Contact form: opens the visitor's email app with the message filled in.
-  //     To receive messages directly instead, point the form at a service such as
-  //     Formspree and delete this block. ---
+  // contact form. opens the visitor's email app with the message filled in.
+  // if you hook the form up to Formspree or similar, delete this part
   var form = document.getElementById('contact-form');
   var note = document.getElementById('form-note');
 
-  // Coming from a shop item ("Ask about this item"): fill in which item.
+  // came from "Ask about this item" on a shop page
   var askItem = new URLSearchParams(location.search).get('item');
   if (form && askItem) {
     form.elements.type.value = 'Buying from the shop';

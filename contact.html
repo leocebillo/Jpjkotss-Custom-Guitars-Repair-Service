@@ -4,20 +4,19 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Contact | JPJKOTSS Custom Guitars &amp; Repair</title>
-  <meta name="claude:viewport-fit-sides" content="cover">
   <meta name="description" content="Call, email or visit JPJKOTSS Custom Guitars &amp; Repair at 229 South Texas Blvd. Ste C, Weslaco, TX 78596.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&amp;family=Instrument+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,400..900;1,62..125,400..900&amp;family=Rubik+Dirt&amp;display=swap">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
 
-  <!-- ===== SHARED HEADER: keep identical on every page ===== -->
+  <!-- header: same on every page -->
   <header class="nav">
     <div class="wrap">
-      <a class="brand" href="index.html">JPJKOTSS<small>CUSTOM GUITARS &amp; REPAIR</small></a>
+      <a class="brand" href="index.html">JPJKOTSS<small>Custom Guitars &amp; Repair</small></a>
       <ul class="nav-links" id="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="shop.html">Shop</a></li>
@@ -30,12 +29,11 @@
       <button class="menu-btn" type="button" aria-controls="nav-links" aria-expanded="false" aria-label="Menu"><span></span></button>
     </div>
   </header>
-  <!-- ===== END SHARED HEADER ===== -->
 
   <main id="main">
     <section class="hero page">
       <div class="wrap">
-        <p class="eyebrow"><i></i>Visit or get in touch</p>
+        <p class="eyebrow">Visit or get in touch</p>
         <h1>Bring it by the shop</h1>
         <p class="tag">Calling is the fastest way to reach us. Tell us what instrument you have and what it's doing.</p>
       </div>
@@ -44,10 +42,21 @@
     <section class="dark-band" aria-label="Contact details">
       <div class="wrap contact-grid">
         <dl class="info">
-          <div class="info-row"><dt>Phone</dt><dd><a class="sel mono" href="tel:+19566510999">956-651-0999</a><button class="copy" type="button" data-copy="956-651-0999">Copy</button></dd></div>
+          <div class="info-row"><dt>Phone</dt><dd><a class="sel num" href="tel:+19566510999">956-651-0999</a><button class="copy" type="button" data-copy="956-651-0999">Copy</button></dd></div>
           <div class="info-row"><dt>Email</dt><dd><a class="sel" href="mailto:Kotss@hotmail.com">Kotss@hotmail.com</a><button class="copy" type="button" data-copy="Kotss@hotmail.com">Copy</button></dd></div>
           <div class="info-row"><dt>Shop</dt><dd>229 South Texas Blvd., Ste C<br>Weslaco, TX 78596<br><a href="https://www.google.com/maps/search/?api=1&amp;query=229+South+Texas+Blvd+Ste+C+Weslaco+TX+78596" target="_blank" rel="noopener">Get directions</a></dd></div>
-          <div class="info-row"><dt>Hours</dt><dd>Call ahead to confirm shop hours</dd></div>
+          <div class="info-row"><dt>Hours</dt><dd>
+            <span class="open-now" id="open-now" hidden></span>
+            <ul class="hours">
+              <li data-day="1"><span>Monday</span><span>Closed</span></li>
+              <li data-day="2"><span>Tuesday</span><span>12–7 PM</span></li>
+              <li data-day="3"><span>Wednesday</span><span>12–7 PM</span></li>
+              <li data-day="4"><span>Thursday</span><span>12–7 PM</span></li>
+              <li data-day="5"><span>Friday</span><span>12–7 PM</span></li>
+              <li data-day="6"><span>Saturday</span><span>12–5 PM</span></li>
+              <li data-day="0"><span>Sunday</span><span>Closed</span></li>
+            </ul>
+          </dd></div>
           <div class="info-row"><dt>Social</dt><dd><a href="https://www.facebook.com/profile.php?id=100082822060140" target="_blank" rel="noopener">Facebook</a></dd></div>
         </dl>
         <form class="contact-form" id="contact-form" novalidate>
@@ -70,12 +79,13 @@
     </section>
   </main>
 
-  <!-- ===== SHARED FOOTER: keep identical on every page ===== -->
+  <!-- footer: same on every page -->
   <footer class="site-footer">
     <div class="wrap">
       <div>
-        <a class="brand" href="index.html">JPJKOTSS<small>CUSTOM GUITARS &amp; REPAIR SERVICE</small></a>
-        <address>229 South Texas Blvd., Ste C<br>Weslaco, TX 78596<br><span class="mono">956-651-0999</span> · Kotss@hotmail.com</address>
+        <a class="brand" href="index.html">JPJKOTSS<small>Custom Guitars &amp; Repair Service</small></a>
+        <address>229 South Texas Blvd., Ste C<br>Weslaco, TX 78596<br><span class="num">956-651-0999</span> · Kotss@hotmail.com</address>
+        <p class="foot-hours">Tue–Fri 12–7 PM · Sat 12–5 PM<br>Closed Sunday &amp; Monday</p>
       </div>
       <div>
         <h4>Pages</h4>
@@ -97,7 +107,6 @@
       <p class="legal"><span>© <span data-year>2026</span> JPJKOTSS Custom Guitars &amp; Repair Service</span><span>Weslaco, Texas · <a href="admin/login.html">Staff login</a></span></p>
     </div>
   </footer>
-  <!-- ===== END SHARED FOOTER ===== -->
 
   <script src="js/main.js"></script>
 </body>

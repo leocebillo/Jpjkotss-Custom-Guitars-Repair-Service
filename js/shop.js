@@ -6,7 +6,7 @@ const { esc, money, stockStatus } = store;
 const $ = s => document.querySelector(s);
 const params = new URLSearchParams(location.search);
 
-/* ---------- shared bits ---------- */
+// shared bits
 function photo(p, cls) {
   const src = p.photos[0];
   return src
@@ -33,7 +33,7 @@ function showDemoNote() {
 }
 const byFeatured = (a, b) => (b.featured - a.featured) || (b.createdAt - a.createdAt);
 
-/* ---------- shop.html ---------- */
+// shop.html
 async function initShop() {
   showDemoNote();
   const grid = $('#shop-grid'), count = $('#result-count'), chipsEl = $('#cat-chips');
@@ -63,7 +63,7 @@ async function initShop() {
     list.sort(sorts[state.sort]);
     count.textContent = `${list.length} item${list.length === 1 ? '' : 's'}`;
     grid.innerHTML = list.length ? list.map(card).join('')
-      : `<div class="empty" style="grid-column:1/-1"><b>Nothing matches that search.</b>Try a different category, or call the shop. We may have it in the back.</div>`;
+      : `<div class="empty"><b>Nothing matches that search.</b>Try a different category, or call the shop. We may have it in the back.</div>`;
   }
 
   chipsEl.addEventListener('click', e => {
@@ -79,7 +79,7 @@ async function initShop() {
   render();
 }
 
-/* ---------- item.html ---------- */
+// item.html
 async function initItem() {
   showDemoNote();
   const view = $('#item-view');
@@ -109,10 +109,10 @@ async function initItem() {
         ${p.description ? `<p class="item-desc">${esc(p.description)}</p>` : ''}
         <div class="item-cta">
           ${sold
-            ? `<a class="btn btn-dark" href="${ask}">Ask about a similar one</a>`
-            : `<a class="btn btn-primary" href="tel:+19566510999">Call to buy · <span class="mono">956-651-0999</span></a>
-               <a class="btn btn-outline" href="${ask}">Ask about this item</a>`}
-          <p class="fine">Buy in person at 229 S. Texas Blvd. Ste C, Weslaco. Call first to confirm it’s still here.</p>
+            ? `<a class="btn btn-ghost" href="${ask}">Ask about a similar one</a>`
+            : `<a class="btn btn-primary" href="tel:+19566510999">Call to buy · <span class="num">956-651-0999</span></a>
+               <a class="btn btn-ghost" href="${ask}">Ask about this item</a>`}
+          <p class="fine">Buy in person at 229 S. Texas Blvd. Ste C, Weslaco, Tuesday–Saturday. Call first to make sure it’s still here.</p>
         </div>
         ${specs.length ? `<dl class="specs">${specs.map(s => `<div><dt>${esc(s.label || 'Note')}</dt><dd>${esc(s.value)}</dd></div>`).join('')}</dl>` : ''}
         <span class="sku">SKU ${esc(p.sku)}</span>
@@ -133,7 +133,7 @@ async function initItem() {
   }
 }
 
-/* ---------- index.html: featured items ---------- */
+// index.html: featured items
 async function initFeatured() {
   const all = await store.listProducts().catch(() => []);
   const list = all.filter(p => p.featured && p.qty > 0).sort(byFeatured).slice(0, 4);

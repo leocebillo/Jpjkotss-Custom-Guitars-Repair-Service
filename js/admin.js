@@ -15,9 +15,7 @@ function toast(msg, isErr) {
   clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), isErr ? 5000 : 2400);
 }
 
-/* =========================================================
-   Login page
-   ========================================================= */
+// login page
 function initLogin() {
   const form = $('#login-form'), msg = $('#login-msg'), btn = $('#l-submit');
   if (store.isDemo) $('#demo-hint').hidden = false;
@@ -43,9 +41,7 @@ function initLogin() {
   });
 }
 
-/* =========================================================
-   Inventory dashboard
-   ========================================================= */
+// inventory dashboard
 function initInventory() {
   let user = null, items = [], editing = null, photos = [];
   const filters = { q: '', cat: 'all', status: 'all' };
@@ -167,7 +163,7 @@ function initInventory() {
     } catch (err) { e.target.checked = !e.target.checked; toast(err.message, true); }
   });
 
-  /* ---------- Editor ---------- */
+  // Editor
   const dlg = $('#editor'), form = $('#ed-form'), err = $('#ed-error'), del = $('#ed-delete');
   let armTimer;
 
